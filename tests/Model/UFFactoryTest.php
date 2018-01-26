@@ -8,7 +8,7 @@
 
 namespace Tests\Model;
 
-use Model\UF\UFFactory;
+use Andre\Model\UF\UFFactory;
 use PHPUnit\Framework\TestCase;
 
 class UFFactoryTest extends TestCase

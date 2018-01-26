@@ -32,7 +32,16 @@ class PersonController extends Controller
 
     public function get(Request $request, Response $response, array $args)
     {
-        return $response->withJson($this->em->getRepository(Person::class)->findAll());
+        if (empty($request->getQueryParams()))
+            return $response->withJson($this->em->getRepository(Person::class)->findAll());
+
+        $resultSet = $this->em->getRepository(Person::class)->filter($request->getQueryParams());
+        $resultArray = [];
+        if ( ! empty($resultSet))
+            foreach ($resultSet as $item)
+                $resultArray[] = $item->jsonSerialize();
+
+        return $response->withJson($resultArray);
     }
 
     public function getOne(Request $request, Response $response, array $args)
@@ -59,6 +68,33 @@ class PersonController extends Controller
         return $response
             ->withStatus(201)
             ->withHeader('location', '/api/person/'.$person->getId());
+    }
+
+    public function put(Request $request, Response $response, array $args)
+    {
+        if (strlen((string) $request->getBody()) < 1)
+            throw new \InvalidArgumentException('Corpo da requisição vazio');
+
+        $body = json_decode((string)$request->getBody(), true);
+
+        $person = $this->em->getRepository(Person::class)->find($request->getAttribute('id'));
+
+        $person->updateWith($body);
+
+        $rule = UFFactory::createUFBehavior($request->getAttribute('uf'));
+
+        $ps = new PersonService($rule, $this->em);
+
+        $ps->put($person);
+
+        return $response->withStatus(200);
+    }
+
+    public function delete(Request $request, Response $response, array $args)
+    {
+        $person = $this->em->getPartialReference(Person::class, $request->getAttribute('id'));
+        $this->em->remove($person);
+        $this->em->flush();
     }
 
 }
