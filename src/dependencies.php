@@ -18,4 +18,4 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
-$container['em'] = \System\Database::getEntityManager();
+$container['em'] = \Andre\System\Database::getEntityManager();

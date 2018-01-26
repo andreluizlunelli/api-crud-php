@@ -1,14 +1,12 @@
 <?php
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Andre\Controller\PersonController;
+use Andre\Middleware\UFMiddleware;
 
-// Routes
-
-$app->get('/[{name}]', function (Request $request, Response $response, array $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
+$app->group('/api/person', function () {
+    $this->get('', PersonController::class.':get');
+    $this->post('/{uf}', PersonController::class.':post')->add(new UFMiddleware());
+    $this->get('/{id}', PersonController::class.':getOne');
+    $this->put('/{id}', PersonController::class.':put');
+    $this->delete('/{id}', PersonController::class.':delete');
 });

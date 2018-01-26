@@ -35,7 +35,7 @@ class PersonService
         $this->em = $em;
     }
 
-    public function put(Person $person)
+    public function put(Person $person): void
     {
         $this->ufRule->rule($person);
 

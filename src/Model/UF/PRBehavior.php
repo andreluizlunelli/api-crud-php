@@ -8,13 +8,21 @@
 
 namespace Andre\Model\UF;
 
-class PRBehavior
+use Andre\Model\Entity\Person;
+
+class PRBehavior implements Rule
 {
 
-    /**
-     * PRBehavior constructor.
-     */
-    public function __construct()
+    public function rule(Person $person): void
     {
+        if (empty($person->getBirthday()))
+            throw new \RuntimeException('Necessário informar a data de nascimento');
+
+        $dateInterval = $person->getBirthday()->diff(new \DateTime('now'));
+
+        if ($dateInterval->y < 18)
+            throw new \RuntimeException('Usuário não pode ser menor de idade');
+
     }
+
 }
