@@ -6,8 +6,9 @@
  * Time: 21:50
  */
 
-namespace Andre\Controller;
+namespace Andre\Controller\Api;
 
+use Andre\Controller\Controller;
 use Andre\Model\Entity\Person;
 use Andre\Model\Hydrator\PersonHydrator;
 use Andre\Model\PersonService;

@@ -1,0 +1,40 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <div class="pt-5 bg-default">
+        <div class="container">
+            <div class="row">
+                <form method="post" id="userRegisterForm">
+                    <div class="form-group">
+                        <label for="ufInput">Estado</label>
+                        <select class="form-control" id="ufInput" name="ufInput">
+                            <option selected>SC</option>
+                            <option>PR</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameInput">Nome</label>
+                        <input type="text" class="form-control" id="nameInput" name="nameInput" placeholder="seu nome...">
+                    </div>
+                    <div class="form-group">
+                        <label for="cpfInput">CPF</label>
+                        <input type="text" class="form-control" id="cpfInput" name="cpfInput" placeholder="seu cpf...">
+                    </div>
+                    <div class="form-group">
+                        <label for="rgInput">RG</label>
+                        <input type="text" class="form-control" id="rgInput" name="rgInput" placeholder="seu rg...">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneInput">Telefone</label>
+                        <input type="text" class="form-control" id="phoneInput" name="phoneInput" placeholder="ex: 999667788;33355878...">
+                        <span class="help-block red">Digite os numeros separados por ponto e vírgula</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthdayInput">Data de nasc.</label>
+                        <input type="date" class="form-control" id="birthdayInput" name="birthdayInput">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -5,8 +5,14 @@ return [
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
         // Renderer settings
-        'renderer' => [
-            'template_path' => __DIR__ . '/../templates/',
+        'view' => [
+            'template_path' => __DIR__ . '/../templates',
+            'template_path_twig' => __DIR__ . '/../templates/twig',
+            'twig' => [
+                'cache' => __DIR__ . '/../cache/twig',
+                'debug' => true,
+                'auto_reload' => true,
+            ],
         ],
 
         // Monolog settings
