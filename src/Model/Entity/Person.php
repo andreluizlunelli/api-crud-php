@@ -8,17 +8,19 @@
 
 namespace Andre\Model\Entity;
 
+use Andre\System\Date;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Andre\Model\Repository\PersonRepository")
  * @ORM\Table(name="person")
  *
  * Class Person
  * @package Model\Entity
  */
-class Person
+class Person implements JsonSerializable
 {
     use EntityTrait;
 
@@ -147,6 +149,46 @@ class Person
     public function setRg(string $rg)
     {
         $this->rg = $rg;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        $_phones = [];
+
+        if ( ! empty($this->getPhones()))
+            foreach ($this->getPhones() as $p)
+                $_phones[] = $p->getNumber();
+
+        return [
+            'id' => $this->getId()
+            ,'name' => $this->getName()
+            ,'cpf' => $this->getCpf() ?? ''
+            ,'rg' => $this->getRg() ?? ''
+            ,'birthday' => $this->getBirthday()->format(Date::FORMAT) ?? ''
+            ,'createdAt' => $this->getCreatedAt()->format(Date::FORMAT) ?? ''
+            ,'phones' => $_phones
+        ];
+    }
+
+    public function updateWith(array $data)
+    {
+        $this->setName($data['name'] ?? null);
+        $this->setBirthday(\DateTime::createFromFormat(Date::FORMAT, $data['birthday']) ?? null);
+        $this->setCpf($data['cpf'] ?? null);
+        $this->setRg($data['rg'] ?? null);
+
+        $phone = $data['phone'] ?? null;
+
+        if ( ! empty($phone))
+            foreach ($phone as $p)
+                $this->addPhone(new Phone($p));
     }
 
 }
