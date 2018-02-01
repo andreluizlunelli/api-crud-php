@@ -23,18 +23,32 @@ $( document ).ready(function() {
     });
 
     function sendUser(form) {
+
+        var date = new Date(form.find('[name="birthdayInput"]').val());
+        var formatedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        var listPhone = form.find('[name="phoneInput"]').val().split(';');
+
         $.ajax({
             type: 'POST',
-            url: '/api/person/' + form.find('[name="ufInput"]'),
-            data: JSON.stringify({
-                'name': form.find('[name="nameInput"]'),
-                'birthday': form.find('[name="birthdayInput"]'),
-                'cpf': form.find('[name="cpfInput"]'),
-                'rg': form.find('[name="rgInput"]')
-            }),
-            success: function(data) { console.log(data); },
+            url: '/api/person/' + form.find('[name="ufInput"]').val(),
             contentType: "application/json",
-            dataType: 'json'
+            dataType: 'json',
+            data: JSON.stringify({
+                'name': form.find('[name="nameInput"]').val(),
+                'birthday': formatedDate,
+                'cpf': form.find('[name="cpfInput"]').val(),
+                'rg': form.find('[name="rgInput"]').val(),
+                'phone': listPhone
+            }),
+            success: function(data) {
+                if (data.message === 'ok') {
+                    showMessageTimeout('Usuário cadastrado com sucesso');
+                }
+            },
+            error: function(data) {
+                console.log(data);
+            }
         });
     }
+
 });

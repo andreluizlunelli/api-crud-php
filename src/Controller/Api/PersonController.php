@@ -68,7 +68,8 @@ class PersonController extends Controller
 
         return $response
             ->withStatus(201)
-            ->withHeader('location', '/api/person/'.$person->getId());
+            ->withHeader('location', '/api/person/'.$person->getId())
+            ->withJson(['message' => 'ok']);
     }
 
     public function put(Request $request, Response $response, array $args)
