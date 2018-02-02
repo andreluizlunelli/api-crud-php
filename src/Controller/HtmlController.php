@@ -8,6 +8,8 @@
 
 namespace Andre\Controller;
 
+use Andre\Model\Entity\Person;
+use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -20,14 +22,25 @@ class HtmlController extends Controller
      */
     private $view;
 
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->view = $container->get('view');
+        $this->em = $container->get('em');
     }
 
     public function home(Request $request, Response $response, array $args)
     {
+        if (empty($request->getQueryParams()))
+            $args['persons'] = $this->em->getRepository(Person::class)->findAll();
+        else
+            $args['persons'] = $this->em->getRepository(Person::class)->filter($request->getQueryParams());
+
         return $this->view->render($response, 'home.twig', $args);
     }
 

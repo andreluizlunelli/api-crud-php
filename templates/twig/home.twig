@@ -1,3 +1,46 @@
 {% extends "layout.twig" %}
 {% block content %}
+    <form class="form">
+        <div class="form-check mb-2 mr-sm-2">
+            <h3>Filtros</h3>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label>Nome</label>
+                <input type="text" class="form-control" name="name" placeholder="Pesquise por um nome">
+            </div>
+            <div class="col-md-2 mb-3">
+                <label>Dat. Cadastro</label>
+                <input type="date" class="form-control" name="createdAt" placeholder="Data de cadastro">
+            </div>
+            <div class="col-md-2 mb-3">
+                <label>Dat. Nascimento</label>
+                <input type="date" class="form-control" name="birthday" placeholder="Data de nascimento">
+            </div>
+            <div class="col-md-2 mb-3">
+                <button class="btn btn-primary" type="submit" style="margin-top: 33px;">Enviar</button>
+                <a class="btn btn-primary" href="/" role="button" style="margin-top: 33px;">Limpar filtro</a>
+            </div>
+        </div>
+    </form>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Data nasc.</th>
+                <th>CPF</th>
+                <th>RG</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in persons %}
+            <tr>
+                <td>{{ p.getName() }}</td>
+                <td>{{ p.getBirthday().format('d/m/Y') }}</td>
+                <td>{{ p.getCpf() }}</td>
+                <td>{{ p.getRg() }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -7,6 +7,7 @@
 namespace Andre\Model\Repository;
 
 use Andre\Model\Entity\Person;
+use Andre\System\Date;
 use Doctrine\ORM\EntityRepository;
 
 class PersonRepository extends EntityRepository
@@ -23,8 +24,8 @@ class PersonRepository extends EntityRepository
         }
 
         if ( ! empty($query['createdAt'])) {
-            $qb->where('p.createdAt LIKE :createdAt');
-            $qb->setParameter('createdAt', '%'.$query['createdAt'].'%');
+            $qb->where('p.createdAt = :createdAt');
+            $qb->setParameter('createdAt', new \DateTime($query['createdAt']), \Doctrine\DBAL\Types\Type::DATETIME);
         }
 
         if ( ! empty($query['cpf'])) {
@@ -38,8 +39,8 @@ class PersonRepository extends EntityRepository
         }
 
         if ( ! empty($query['birthday'])) {
-            $qb->where('p.birthday LIKE :birthday');
-            $qb->setParameter('birthday', '%'.$query['birthday'].'%');
+            $qb->where('p.birthday = :birthday');
+            $qb->setParameter('birthday', new \DateTime($query['birthday']), \Doctrine\DBAL\Types\Type::DATETIME);
         }
 
         return $qb->getQuery()->getResult();
